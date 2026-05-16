@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FlameBox Kitchen - Premium Cloud Kitchen | Order Online</title>
+    <title>FlameBox Kitchen - Premium Cloud Kitchen Ordering</title>
     <style>
         * {
             margin: 0;
@@ -12,13 +12,15 @@
         }
 
         :root {
-            --primary-dark: #0a0a0a;
-            --secondary-dark: #1a1a2e;
-            --accent-orange: #ff6b35;
-            --accent-orange-light: #ff8c42;
-            --white: #ffffff;
-            --gray-light: #e0e0e0;
-            --gray-dark: #2a2a3e;
+            --primary-color: #ff6b35;
+            --secondary-color: #f7931e;
+            --dark-bg: #0a0e27;
+            --card-bg: rgba(20, 25, 50, 0.7);
+            --glass-bg: rgba(30, 35, 65, 0.6);
+            --text-primary: #ffffff;
+            --text-secondary: #b0b8d4;
+            --border-color: rgba(255, 107, 53, 0.2);
+            --glow-color: #ff6b35;
         }
 
         html {
@@ -27,32 +29,36 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: var(--primary-dark);
-            color: var(--white);
-            overflow-x: hidden;
+            background: linear-gradient(135deg, var(--dark-bg) 0%, #0f1535 100%);
+            color: var(--text-primary);
             line-height: 1.6;
+            overflow-x: hidden;
         }
 
-        /* ===== NAVBAR ===== */
-        nav {
+        /* NAVBAR */
+        .navbar {
             position: fixed;
             top: 0;
-            width: 100%;
+            left: 0;
+            right: 0;
             z-index: 1000;
-            background: rgba(10, 10, 10, 0.9);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(255, 107, 53, 0.2);
-            padding: 1rem 2rem;
+            background: rgba(10, 14, 39, 0.85);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 0;
+            transition: all 0.3s ease;
         }
 
-        nav.scrolled {
-            background: rgba(10, 10, 10, 0.98);
-            box-shadow: 0 8px 32px rgba(255, 107, 53, 0.15);
+        .navbar.scrolled {
+            background: rgba(10, 14, 39, 0.95);
+            padding: 0.8rem 0;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
         }
 
-        .nav-container {
+        .navbar-container {
             max-width: 1400px;
             margin: 0 auto;
+            padding: 0 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -60,42 +66,45 @@
 
         .logo {
             font-size: 1.8rem;
-            font-weight: bold;
-            background: linear-gradient(135deg, #ff6b35, #ff8c42);
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: -1px;
+            text-decoration: none;
         }
 
         .nav-menu {
             display: flex;
-            gap: 2rem;
             list-style: none;
+            gap: 2.5rem;
         }
 
-        .nav-menu a {
-            color: var(--white);
+        .nav-link {
+            color: var(--text-secondary);
             text-decoration: none;
+            font-weight: 500;
             transition: all 0.3s ease;
             position: relative;
-            font-size: 0.95rem;
-            font-weight: 500;
         }
 
-        .nav-menu a::after {
+        .nav-link:hover {
+            color: var(--primary-color);
+        }
+
+        .nav-link::after {
             content: '';
             position: absolute;
             bottom: -5px;
             left: 0;
             width: 0;
             height: 2px;
-            background: linear-gradient(90deg, #ff6b35, #ff8c42);
+            background: var(--primary-color);
             transition: width 0.3s ease;
         }
 
-        .nav-menu a:hover::after {
+        .nav-link:hover::after {
             width: 100%;
         }
 
@@ -103,17 +112,17 @@
             display: none;
             flex-direction: column;
             cursor: pointer;
-            gap: 5px;
         }
 
         .hamburger span {
             width: 25px;
             height: 3px;
-            background: #ff6b35;
-            border-radius: 3px;
+            background: var(--primary-color);
+            margin: 5px 0;
+            transition: 0.3s;
         }
 
-        /* ===== HERO SECTION ===== */
+        /* HERO SECTION */
         .hero {
             min-height: 100vh;
             display: flex;
@@ -122,105 +131,46 @@
             position: relative;
             overflow: hidden;
             margin-top: 60px;
-            background: linear-gradient(135deg, rgba(0,0,0,0.7), rgba(255,107,53,0.2)),
-            url('24099.webp');
-
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
         }
 
         .hero::before {
             content: '';
             position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, rgba(0,0,0,0.6), rgba(0,0,0,0.4));
-            z-index: 1;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(rgba(10, 14, 39, 0.7), rgba(255, 107, 53, 0.1)),
+                        url('24099.webp') center/cover no-repeat;
+            z-index: -1;
+        }
+
+        .hero-particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: float 20s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) translateX(0px); }
+            50% { transform: translateY(-20px) translateX(20px); }
         }
 
         .hero-content {
-            position: relative;
-            z-index: 2;
             text-align: center;
+            z-index: 2;
             animation: fadeInUp 1s ease-out;
-        }
-
-        .hero h1 {
-            font-size: 4rem;
-            font-weight: 900;
-            margin-bottom: 1rem;
-            background: linear-gradient(135deg, var(--white), #ff6b35);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            line-height: 1.2;
-        }
-
-        .hero-subtitle {
-            font-size: 1.4rem;
-            margin-bottom: 2rem;
-            color: var(--gray-light);
-            font-weight: 300;
-            letter-spacing: 1px;
-        }
-
-        .hero-buttons {
-            display: flex;
-            gap: 1.5rem;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin-bottom: 3rem;
-        }
-
-        .btn {
-            padding: 1rem 2.5rem;
-            border: none;
-            border-radius: 50px;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, #ff6b35, #ff8c42);
-            color: var(--white);
-            box-shadow: 0 8px 25px rgba(255, 107, 53, 0.3);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 40px rgba(255, 107, 53, 0.5);
-        }
-
-        .btn-secondary {
-            background: transparent;
-            color: var(--white);
-            border: 2px solid #ff6b35;
-        }
-
-        .btn-secondary:hover {
-            background: #ff6b35;
-            transform: translateY(-3px);
-        }
-
-        .scroll-indicator {
-            position: absolute;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            animation: bounce 2s infinite;
-            z-index: 3;
-            font-size: 1.5rem;
-        }
-
-        @keyframes bounce {
-            0%, 100% { transform: translateX(-50%) translateY(0); }
-            50% { transform: translateX(-50%) translateY(10px); }
         }
 
         @keyframes fadeInUp {
@@ -234,61 +184,113 @@
             }
         }
 
-        /* ===== ABOUT SECTION ===== */
+        .hero h1 {
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            font-weight: 900;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.1;
+            text-shadow: 0 0 30px rgba(255, 107, 53, 0.3);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-bottom: 2.5rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 0.9rem 2rem;
+            font-size: 1rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-block;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            box-shadow: 0 10px 30px rgba(255, 107, 53, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(255, 107, 53, 0.5);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+
+        .btn-outline:hover {
+            background: rgba(255, 107, 53, 0.1);
+            box-shadow: 0 10px 30px rgba(255, 107, 53, 0.2);
+        }
+
+        /* ABOUT SECTION */
         .about {
             padding: 6rem 2rem;
-            background: linear-gradient(135deg, var(--primary-dark), var(--secondary-dark));
-            position: relative;
-        }
-
-        .about::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 300px;
-            height: 300px;
-            background: radial-gradient(circle, rgba(255, 107, 53, 0.1) 0%, transparent 70%);
-            border-radius: 50%;
-        }
-
-        .section-container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
         }
 
         .section-title {
-            font-size: 3rem;
-            font-weight: 900;
-            margin-bottom: 1rem;
-            background: linear-gradient(135deg, var(--white), #ff6b35);
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 3rem;
+            text-align: center;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            text-transform: uppercase;
-            letter-spacing: 2px;
         }
 
-        .about-grid {
+        .about-content {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 3rem;
             align-items: center;
-            margin-top: 3rem;
+            margin-bottom: 4rem;
+        }
+
+        .about-text h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
         }
 
         .about-text p {
-            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
             line-height: 1.8;
-            color: var(--gray-light);
-            margin-bottom: 1.5rem;
         }
 
         .about-image {
-            position: relative;
-            border-radius: 15px;
+            width: 100%;
+            height: 400px;
+            border-radius: 12px;
             overflow: hidden;
-            aspect-ratio: 1;
             box-shadow: 0 20px 60px rgba(255, 107, 53, 0.2);
         }
 
@@ -296,108 +298,112 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.6s ease;
+            transition: transform 0.3s ease;
         }
 
         .about-image:hover img {
-            transform: scale(1.08);
+            transform: scale(1.05);
         }
 
         .stats {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1.5rem;
-            margin-top: 3rem;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
         }
 
         .stat-card {
-            background: rgba(255, 107, 53, 0.1);
-            border: 1px solid rgba(255, 107, 53, 0.2);
-            border-radius: 10px;
+            background: var(--glass-bg);
+            border: 1px solid var(--border-color);
             padding: 2rem;
+            border-radius: 12px;
             text-align: center;
             backdrop-filter: blur(10px);
             transition: all 0.3s ease;
         }
 
         .stat-card:hover {
-            background: rgba(255, 107, 53, 0.15);
-            border-color: rgba(255, 107, 53, 0.4);
             transform: translateY(-5px);
+            border-color: var(--primary-color);
+            box-shadow: 0 20px 40px rgba(255, 107, 53, 0.2);
         }
 
         .stat-number {
             font-size: 2.5rem;
-            font-weight: 900;
-            color: #ff6b35;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
             margin-bottom: 0.5rem;
         }
 
         .stat-label {
-            font-size: 0.9rem;
-            color: var(--gray-light);
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            color: var(--text-secondary);
+            font-weight: 500;
         }
 
-        /* ===== MENU SECTION ===== */
+        /* MENU SECTION */
         .menu {
             padding: 6rem 2rem;
-            background: var(--primary-dark);
-            position: relative;
+            max-width: 1400px;
+            margin: 0 auto;
         }
 
-        .menu-tabs {
+        .menu-categories {
             display: flex;
+            justify-content: center;
             gap: 1rem;
             margin-bottom: 3rem;
             flex-wrap: wrap;
-            justify-content: center;
         }
 
-        .menu-tab {
-            padding: 0.8rem 1.5rem;
-            border: 2px solid rgba(255, 107, 53, 0.3);
-            background: transparent;
-            color: var(--white);
+        .category-btn {
+            padding: 0.6rem 1.5rem;
+            background: var(--glass-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
             border-radius: 25px;
             cursor: pointer;
             transition: all 0.3s ease;
             font-weight: 600;
         }
 
-        .menu-tab.active {
-            background: linear-gradient(135deg, #ff6b35, #ff8c42);
-            border-color: #ff6b35;
+        .category-btn.active {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border-color: var(--primary-color);
         }
 
-        .menu-grid {
+        .category-btn:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        .food-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 2rem;
-            margin-top: 2rem;
         }
 
         .food-card {
-            background: rgba(255, 107, 53, 0.05);
-            border: 1px solid rgba(255, 107, 53, 0.15);
-            border-radius: 15px;
+            background: var(--card-bg);
+            border-radius: 12px;
             overflow: hidden;
-            transition: all 0.4s ease;
+            transition: all 0.3s ease;
+            border: 1px solid var(--border-color);
             cursor: pointer;
             backdrop-filter: blur(10px);
         }
 
         .food-card:hover {
-            transform: translateY(-10px);
-            border-color: rgba(255, 107, 53, 0.5);
-            background: rgba(255, 107, 53, 0.1);
-            box-shadow: 0 15px 40px rgba(255, 107, 53, 0.2);
+            transform: translateY(-8px);
+            border-color: var(--primary-color);
+            box-shadow: 0 20px 60px rgba(255, 107, 53, 0.3);
         }
 
         .food-image {
             width: 100%;
-            height: 250px;
+            height: 220px;
             overflow: hidden;
             position: relative;
         }
@@ -406,11 +412,26 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.4s ease;
+            transition: transform 0.3s ease;
         }
 
         .food-card:hover .food-image img {
             transform: scale(1.1);
+        }
+
+        .food-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255, 107, 53, 0.3), rgba(0, 0, 0, 0.5));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .food-card:hover .food-overlay {
+            opacity: 1;
         }
 
         .food-info {
@@ -418,16 +439,16 @@
         }
 
         .food-name {
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             font-weight: 700;
             margin-bottom: 0.5rem;
-            color: var(--white);
         }
 
-        .food-description {
+        .food-desc {
+            color: var(--text-secondary);
             font-size: 0.9rem;
-            color: var(--gray-light);
             margin-bottom: 1rem;
+            line-height: 1.5;
         }
 
         .food-footer {
@@ -437,129 +458,126 @@
         }
 
         .food-price {
-            font-size: 1.4rem;
-            font-weight: 900;
-            color: #ff6b35;
+            font-size: 1.3rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .food-rating {
-            color: #ff6b35;
-            font-size: 0.9rem;
+            color: var(--secondary-color);
+            font-weight: 600;
+            font-size: 0.95rem;
         }
 
-        .add-to-order-btn {
-            padding: 0.5rem 1rem;
-            background: linear-gradient(135deg, #ff6b35, #ff8c42);
-            color: var(--white);
+        .add-btn {
+            background: var(--primary-color);
+            color: white;
             border: none;
-            border-radius: 20px;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
             cursor: pointer;
             font-weight: 600;
-            font-size: 0.85rem;
             transition: all 0.3s ease;
         }
 
-        .add-to-order-btn:hover {
+        .add-btn:hover {
+            background: var(--secondary-color);
             transform: scale(1.05);
-            box-shadow: 0 5px 15px rgba(255, 107, 53, 0.4);
         }
 
-        /* ===== COMBOS SECTION ===== */
+        /* COMBOS SECTION */
         .combos {
             padding: 6rem 2rem;
-            background: linear-gradient(135deg, var(--secondary-dark), var(--primary-dark));
-            position: relative;
+            max-width: 1400px;
+            margin: 0 auto;
         }
 
         .combo-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 2rem;
-            margin-top: 2rem;
         }
 
         .combo-card {
             position: relative;
-            border-radius: 15px;
+            border-radius: 12px;
             overflow: hidden;
-            aspect-ratio: 1;
+            height: 400px;
             cursor: pointer;
-            box-shadow: 0 15px 40px rgba(255, 107, 53, 0.15);
-            transition: all 0.4s ease;
+            transition: all 0.3s ease;
+            border: 1px solid var(--border-color);
         }
 
-        .combo-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 25px 60px rgba(255, 107, 53, 0.3);
-        }
-
-        .combo-image {
+        .combo-card img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.5s ease;
+            transition: transform 0.3s ease;
         }
 
-        .combo-card:hover .combo-image {
-            transform: scale(1.08);
+        .combo-card:hover img {
+            transform: scale(1.05);
         }
 
         .combo-overlay {
             position: absolute;
-            inset: 0;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
             background: linear-gradient(135deg, rgba(0, 0, 0, 0.7), rgba(255, 107, 53, 0.3));
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
             padding: 2rem;
-            transition: all 0.4s ease;
+            transition: all 0.3s ease;
+        }
+
+        .combo-card:hover .combo-overlay {
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.85), rgba(255, 107, 53, 0.5));
+        }
+
+        .combo-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: var(--primary-color);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
         }
 
         .combo-title {
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             font-weight: 800;
             margin-bottom: 0.5rem;
-            color: var(--white);
         }
 
-        .combo-discount {
-            display: inline-block;
-            background: #ff6b35;
-            color: var(--primary-dark);
-            padding: 0.4rem 1rem;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: 700;
+        .combo-desc {
+            color: var(--text-secondary);
             margin-bottom: 1rem;
-            width: fit-content;
+            font-size: 0.95rem;
         }
 
-        .combo-price {
-            font-size: 1.3rem;
-            color: var(--gray-light);
-        }
-
-        /* ===== ORDER SECTION ===== */
+        /* ORDER SECTION */
         .order-section {
             padding: 6rem 2rem;
-            background: linear-gradient(135deg, var(--primary-dark), var(--secondary-dark));
-            position: relative;
-        }
-
-        .order-section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: -200px;
-            width: 400px;
-            height: 400px;
-            background: radial-gradient(circle, rgba(255, 107, 53, 0.08) 0%, transparent 70%);
-            border-radius: 50%;
+            max-width: 1400px;
+            margin: 0 auto;
         }
 
         .order-container {
-            max-width: 1200px;
-            margin: 0 auto;
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 3rem;
@@ -567,12 +585,11 @@
         }
 
         .order-form {
-            background: rgba(255, 107, 53, 0.05);
-            border: 1px solid rgba(255, 107, 53, 0.2);
-            border-radius: 15px;
+            background: var(--glass-bg);
+            border: 1px solid var(--border-color);
             padding: 2.5rem;
+            border-radius: 12px;
             backdrop-filter: blur(10px);
-            box-shadow: 0 10px 40px rgba(255, 107, 53, 0.1);
         }
 
         .form-group {
@@ -583,404 +600,97 @@
             display: block;
             margin-bottom: 0.5rem;
             font-weight: 600;
-            font-size: 0.95rem;
-            color: var(--white);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            color: var(--text-secondary);
         }
 
         .form-group input,
+        .form-group select,
         .form-group textarea {
             width: 100%;
             padding: 0.8rem;
-            border: 1px solid rgba(255, 107, 53, 0.3);
-            background: rgba(255, 107, 53, 0.05);
-            color: var(--white);
-            border-radius: 8px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-primary);
             font-family: inherit;
             transition: all 0.3s ease;
         }
 
         .form-group input:focus,
+        .form-group select:focus,
         .form-group textarea:focus {
             outline: none;
-            border-color: #ff6b35;
-            background: rgba(255, 107, 53, 0.1);
-            box-shadow: 0 0 20px rgba(255, 107, 53, 0.2);
+            border-color: var(--primary-color);
+            background: rgba(0, 0, 0, 0.5);
+            box-shadow: 0 0 15px rgba(255, 107, 53, 0.2);
         }
 
         .order-summary {
-            background: rgba(255, 107, 53, 0.05);
-            border: 1px solid rgba(255, 107, 53, 0.2);
-            border-radius: 15px;
+            background: var(--glass-bg);
+            border: 1px solid var(--border-color);
             padding: 2.5rem;
+            border-radius: 12px;
             backdrop-filter: blur(10px);
-            position: sticky;
-            top: 100px;
-            box-shadow: 0 10px 40px rgba(255, 107, 53, 0.1);
-        }
-
-        .summary-title {
-            font-size: 1.5rem;
-            font-weight: 800;
-            margin-bottom: 1.5rem;
-            color: var(--white);
+            height: fit-content;
         }
 
         .summary-item {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 1rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid rgba(255, 107, 53, 0.1);
             align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border-color);
         }
 
-        .summary-item-name {
-            color: var(--gray-light);
-            font-size: 0.95rem;
-            flex: 1;
-        }
-
-        .summary-item-price {
-            color: #ff6b35;
-            font-weight: 700;
-            margin: 0 1rem;
+        .summary-item:last-child {
+            border-bottom: none;
         }
 
         .summary-total {
             display: flex;
             justify-content: space-between;
-            margin-top: 1.5rem;
-            padding-top: 1.5rem;
-            border-top: 2px solid #ff6b35;
+            align-items: center;
+            padding: 1.5rem 0;
             font-size: 1.3rem;
-            font-weight: 900;
-        }
-
-        .summary-total-price {
-            color: #ff6b35;
+            font-weight: 800;
+            color: var(--primary-color);
         }
 
         .order-buttons {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
+            display: flex;
             gap: 1rem;
             margin-top: 2rem;
         }
 
         .btn-whatsapp {
-            background: #25d366;
-            color: var(--white);
-            padding: 1rem;
-            border: none;
-            border-radius: 8px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 0.95rem;
-            text-transform: uppercase;
+            background: #25D366;
+            color: white;
+            flex: 1;
         }
 
         .btn-whatsapp:hover {
-            background: #20ba5a;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(37, 211, 102, 0.3);
+            background: #20BA5A;
+            box-shadow: 0 10px 30px rgba(37, 211, 102, 0.3);
         }
 
         .btn-call {
-            background: #ff6b35;
-            color: var(--white);
+            background: var(--primary-color);
+            color: white;
+            flex: 1;
         }
 
-        .btn-call:hover {
-            background: #ff8c42;
-            transform: translateY(-2px);
-        }
-
-        /* ===== REVIEWS SECTION ===== */
-        .reviews {
-            padding: 6rem 2rem;
-            background: var(--primary-dark);
-            position: relative;
-        }
-
-        .reviews-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
-        }
-
-        .review-card {
-            background: rgba(255, 107, 53, 0.05);
-            border: 1px solid rgba(255, 107, 53, 0.15);
-            border-radius: 15px;
-            padding: 2rem;
-            backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
-        }
-
-        .review-card:hover {
-            transform: translateY(-5px);
-            border-color: rgba(255, 107, 53, 0.4);
-            background: rgba(255, 107, 53, 0.1);
-        }
-
-        .review-header {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 1rem;
-            align-items: center;
-        }
-
-        .review-avatar {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #ff6b35, #ff8c42);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 1.2rem;
-        }
-
-        .review-name {
-            font-weight: 700;
-            color: var(--white);
-        }
-
-        .review-rating {
-            color: #ff6b35;
-            font-size: 0.9rem;
-            margin-top: 0.2rem;
-        }
-
-        .review-text {
-            color: var(--gray-light);
-            line-height: 1.6;
-            font-style: italic;
-        }
-
-        /* ===== KITCHEN SHOWCASE ===== */
-        .kitchen-showcase {
-            padding: 6rem 2rem;
-            background: linear-gradient(135deg, var(--secondary-dark), var(--primary-dark));
-            position: relative;
-        }
-
-        .showcase-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 3rem;
-            align-items: center;
-            margin-top: 3rem;
-        }
-
-        .showcase-image {
-            position: relative;
-            border-radius: 15px;
-            overflow: hidden;
-            aspect-ratio: 16 / 9;
-            box-shadow: 0 20px 60px rgba(255, 107, 53, 0.2);
-        }
-
-        .showcase-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.6s ease;
-        }
-
-        .showcase-image:hover img {
-            transform: scale(1.05);
-        }
-
-        .showcase-content h3 {
-            font-size: 1.8rem;
-            margin-bottom: 1rem;
-            color: #ff6b35;
-        }
-
-        .showcase-content p {
-            font-size: 1rem;
-            line-height: 1.8;
-            color: var(--gray-light);
-            margin-bottom: 1rem;
-        }
-
-        /* ===== GALLERY SECTION ===== */
-        .gallery {
-            padding: 6rem 2rem;
-            background: var(--primary-dark);
-            position: relative;
-        }
-
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
-        }
-
-        .gallery-item {
-            position: relative;
-            border-radius: 15px;
-            overflow: hidden;
-            aspect-ratio: 1;
-            cursor: pointer;
-            box-shadow: 0 10px 30px rgba(255, 107, 53, 0.1);
-            transition: all 0.4s ease;
-        }
-
-        .gallery-item:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 50px rgba(255, 107, 53, 0.25);
-        }
-
-        .gallery-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s ease;
-        }
-
-        .gallery-item:hover .gallery-img {
-            transform: scale(1.1);
-        }
-
-        .gallery-overlay {
-            position: absolute;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.5);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .gallery-item:hover .gallery-overlay {
-            opacity: 1;
-        }
-
-        .gallery-text {
-            color: var(--white);
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        /* ===== CONTACT SECTION ===== */
-        .contact {
-            padding: 6rem 2rem;
-            background: linear-gradient(135deg, var(--secondary-dark), var(--primary-dark));
-            position: relative;
-        }
-
-        .contact-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
-        }
-
-        .contact-card {
-            background: rgba(255, 107, 53, 0.05);
-            border: 1px solid rgba(255, 107, 53, 0.2);
-            border-radius: 15px;
-            padding: 2rem;
-            text-align: center;
-            backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
-        }
-
-        .contact-card:hover {
-            transform: translateY(-5px);
-            border-color: rgba(255, 107, 53, 0.5);
-            background: rgba(255, 107, 53, 0.1);
-        }
-
-        .contact-icon {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .contact-label {
-            font-size: 0.9rem;
-            color: var(--gray-light);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 0.5rem;
-        }
-
-        .contact-value {
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: #ff6b35;
-        }
-
-        /* ===== FOOTER ===== */
-        footer {
-            background: rgba(0, 0, 0, 0.9);
-            border-top: 1px solid rgba(255, 107, 53, 0.2);
-            padding: 3rem 2rem 1rem;
-        }
-
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 2rem;
-            margin-bottom: 2rem;
-        }
-
-        .footer-section h3 {
-            color: #ff6b35;
-            margin-bottom: 1rem;
-            font-size: 1.1rem;
-            text-transform: uppercase;
-        }
-
-        .footer-section ul {
-            list-style: none;
-        }
-
-        .footer-section ul li {
-            margin-bottom: 0.5rem;
-        }
-
-        .footer-section a {
-            color: var(--gray-light);
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-
-        .footer-section a:hover {
-            color: #ff6b35;
-        }
-
-        .footer-bottom {
-            text-align: center;
-            padding-top: 2rem;
-            border-top: 1px solid rgba(255, 107, 53, 0.1);
-            color: var(--gray-light);
-        }
-
-        /* ===== FLOATING BUTTONS ===== */
+        /* FLOATING BUTTONS */
         .floating-buttons {
             position: fixed;
-            bottom: 30px;
-            right: 30px;
+            bottom: 2rem;
+            right: 2rem;
             z-index: 999;
             display: flex;
             flex-direction: column;
             gap: 1rem;
         }
 
-        .floating-btn {
+        .float-btn {
             width: 60px;
             height: 60px;
             border-radius: 50%;
@@ -988,115 +698,289 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: all 0.3s ease;
             font-size: 1.5rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            color: white;
+            text-decoration: none;
             border: none;
-            font-weight: bold;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
         }
 
-        .floating-whatsapp {
-            background: #25d366;
-            color: var(--white);
+        .float-whatsapp {
+            background: #25D366;
         }
 
-        .floating-whatsapp:hover {
-            transform: scale(1.1);
-            box-shadow: 0 12px 35px rgba(37, 211, 102, 0.4);
+        .float-whatsapp:hover {
+            transform: scale(1.15);
+            box-shadow: 0 10px 30px rgba(37, 211, 102, 0.4);
         }
 
-        .floating-call {
-            background: #ff6b35;
-            color: var(--white);
+        .float-call {
+            background: var(--primary-color);
         }
 
-        .floating-call:hover {
-            transform: scale(1.1);
-            box-shadow: 0 12px 35px rgba(255, 107, 53, 0.4);
+        .float-call:hover {
+            transform: scale(1.15);
+            box-shadow: 0 10px 30px rgba(255, 107, 53, 0.4);
         }
 
-        .scroll-reveal {
-            opacity: 0;
-            transform: translateY(30px);
+        /* REVIEWS SECTION */
+        .reviews {
+            padding: 6rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
         }
 
-        .scroll-reveal.revealed {
-            animation: fadeInUp 0.8s ease-out forwards;
+        .review-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
         }
 
+        .review-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--border-color);
+            padding: 2rem;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .review-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary-color);
+            box-shadow: 0 20px 40px rgba(255, 107, 53, 0.2);
+        }
+
+        .review-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .review-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: white;
+        }
+
+        .review-name {
+            font-weight: 700;
+            margin-bottom: 0.2rem;
+        }
+
+        .review-rating {
+            color: var(--secondary-color);
+            font-size: 0.9rem;
+        }
+
+        .review-text {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            font-style: italic;
+        }
+
+        /* FOOTER */
+        .footer {
+            background: linear-gradient(rgba(10, 14, 39, 0.95), rgba(0, 0, 0, 0.9)),
+                        url('24110.webp') center/cover no-repeat;
+            background-attachment: fixed;
+            padding: 4rem 2rem;
+            max-width: 100%;
+            margin-top: 6rem;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section h4 {
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        .footer-section p {
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary-color);
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--glass-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--primary-color);
+        }
+
+        .social-icon:hover {
+            background: var(--primary-color);
+            border-color: var(--primary-color);
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid var(--border-color);
+            padding-top: 2rem;
+            text-align: center;
+            color: var(--text-secondary);
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* RESPONSIVE */
         @media (max-width: 768px) {
             .nav-menu {
                 display: none;
-                position: absolute;
-                top: 70px;
-                left: 0;
-                right: 0;
-                flex-direction: column;
-                background: rgba(10, 10, 10, 0.95);
-                padding: 2rem;
-            }
-
-            .nav-menu.active {
-                display: flex;
             }
 
             .hamburger {
                 display: flex;
             }
 
-            .hero h1 {
-                font-size: 2.5rem;
-            }
-
-            .about-grid,
-            .showcase-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .stats {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
+            .about-content,
             .order-container {
                 grid-template-columns: 1fr;
             }
 
-            .order-summary {
-                position: static;
+            .hero h1 {
+                font-size: 2rem;
             }
 
             .section-title {
-                font-size: 2rem;
+                font-size: 1.8rem;
+            }
+
+            .floating-buttons {
+                bottom: 1rem;
+                right: 1rem;
+            }
+
+            .float-btn {
+                width: 50px;
+                height: 50px;
+                font-size: 1.2rem;
+            }
+
+            .menu-categories {
+                gap: 0.5rem;
+            }
+
+            .category-btn {
+                padding: 0.4rem 1rem;
+                font-size: 0.85rem;
+            }
+
+            .food-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .order-buttons {
+                flex-direction: column;
             }
         }
 
-        ::-webkit-scrollbar {
-            width: 10px;
-        }
+        @media (max-width: 480px) {
+            .navbar-container {
+                padding: 0 1rem;
+            }
 
-        ::-webkit-scrollbar-track {
-            background: var(--primary-dark);
-        }
+            .hero {
+                margin-top: 60px;
+            }
 
-        ::-webkit-scrollbar-thumb {
-            background: linear-gradient(135deg, #ff6b35, #ff8c42);
-            border-radius: 5px;
+            .hero h1 {
+                font-size: 1.5rem;
+            }
+
+            .hero p {
+                font-size: 0.95rem;
+            }
+
+            .hero-buttons {
+                gap: 0.8rem;
+            }
+
+            .btn {
+                padding: 0.7rem 1.5rem;
+                font-size: 0.9rem;
+            }
+
+            .about {
+                padding: 3rem 1rem;
+            }
+
+            .menu {
+                padding: 3rem 1rem;
+            }
+
+            .order-section {
+                padding: 3rem 1rem;
+            }
+
+            .order-form,
+            .order-summary {
+                padding: 1.5rem;
+            }
         }
     </style>
 </head>
 <body>
     <!-- NAVBAR -->
-    <nav id="navbar">
-        <div class="nav-container">
-            <div class="logo">🔥 FlameBox</div>
-            <ul class="nav-menu" id="navMenu">
-                <li><a href="#home">Home</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#menu">Menu</a></li>
-                <li><a href="#order">Order</a></li>
-                <li><a href="#contact">Contact</a></li>
+    <nav class="navbar" id="navbar">
+        <div class="navbar-container">
+            <a href="#" class="logo">🔥 FlameBox</a>
+            <ul class="nav-menu">
+                <li><a href="#home" class="nav-link">Home</a></li>
+                <li><a href="#menu" class="nav-link">Menu</a></li>
+                <li><a href="#combos" class="nav-link">Specials</a></li>
+                <li><a href="#order" class="nav-link">Order</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
             </ul>
-            <div class="hamburger" id="hamburger">
+            <div class="hamburger">
                 <span></span>
                 <span></span>
                 <span></span>
@@ -1106,525 +990,621 @@
 
     <!-- HERO SECTION -->
     <section class="hero" id="home">
+        <div class="hero-particles" id="particles"></div>
         <div class="hero-content">
-            <h1>🔥 ORDER YOUR FAVORITE MEALS 🔥</h1>
-            <p class="hero-subtitle">Freshly Prepared • Fast Delivery • Premium Taste</p>
+            <h1>ORDER YOUR FAVORITE MEALS ONLINE</h1>
+            <p>Freshly prepared • Fast delivery • Premium taste</p>
             <div class="hero-buttons">
-                <button class="btn btn-primary" onclick="document.getElementById('order').scrollIntoView({behavior: 'smooth'})">📱 Order Now</button>
-                <button class="btn btn-secondary" onclick="contactViaWhatsApp()">💬 WhatsApp</button>
-                <button class="btn btn-secondary" onclick="callNow()">☎️ Call</button>
+                <button class="btn btn-primary" onclick="scrollToSection('order')">Order Now</button>
+                <button class="btn btn-outline" onclick="orderViaWhatsApp()">WhatsApp Order</button>
+                <a href="tel:+919999999999" class="btn btn-outline">Call Now</a>
             </div>
         </div>
-        <div class="scroll-indicator">⬇️</div>
     </section>
 
     <!-- ABOUT SECTION -->
     <section class="about" id="about">
-        <div class="section-container">
-            <h2 class="section-title">✨ Welcome to FlameBox</h2>
-            <div class="about-grid">
-                <div class="about-text">
-                    <p>🔥 Experience the finest cloud kitchen cuisine crafted with premium ingredients and expert techniques.</p>
-                    <p>✨ Every meal is prepared fresh to order, ensuring maximum quality and delicious taste in every bite.</p>
-                    <p>🚀 Fast delivery within 30 minutes with our optimized logistics and professional delivery team.</p>
-                    <p>💎 Premium taste and hygienic preparation are our top priorities for your satisfaction.</p>
-                    <p>👨‍🍳 Our expert chefs use only the finest ingredients to create culinary masterpieces.</p>
-                </div>
-                <div class="about-image">
-                    <img src="24108.webp" alt="About Image" loading="lazy">
-                </div>
+        <h2 class="section-title">Why Choose FlameBox Kitchen?</h2>
+        <div class="about-content">
+            <div class="about-text">
+                <h3>Premium Cloud Kitchen Experience</h3>
+                <p>We specialize in hygienic food preparation with the freshest ingredients sourced daily. Our team of expert chefs prepares every meal with precision and care.</p>
+                <p>✓ Hygienic food preparation process<br>
+                   ✓ 30-minute guaranteed delivery<br>
+                   ✓ Fresh ingredients only<br>
+                   ✓ Premium taste in every bite<br>
+                   ✓ Online ordering convenience</p>
             </div>
-            <div class="stats">
-                <div class="stat-card scroll-reveal">
-                    <div class="stat-number">5K+</div>
-                    <div class="stat-label">Happy Orders</div>
-                </div>
-                <div class="stat-card scroll-reveal">
-                    <div class="stat-number">30 min</div>
-                    <div class="stat-label">Fast Delivery</div>
-                </div>
-                <div class="stat-card scroll-reveal">
-                    <div class="stat-number">50+</div>
-                    <div class="stat-label">Menu Items</div>
-                </div>
-                <div class="stat-card scroll-reveal">
-                    <div class="stat-number">4.9⭐</div>
-                    <div class="stat-label">Customer Rating</div>
-                </div>
+            <div class="about-image">
+                <img src="file:///C:/Users/ponra/OneDrive/Desktop/New%20folder%20(2)/24101.webp" alt="Cloud Kitchen" loading="lazy">
             </div>
         </div>
-    </section>
 
-    <!-- KITCHEN SHOWCASE 1 -->
-    <section class="kitchen-showcase">
-        <div class="section-container">
-            <h2 class="section-title">👨‍🍳 Our Premium Kitchen</h2>
-            <div class="showcase-grid">
-                <div class="showcase-image">
-                    <img src="24099.webp" alt="Showcase Image" loading="lazy">
-                </div>
-
-                <div class="showcase-content">
-                    <h3>Expert Chefs at Work</h3>
-                    <p>Our highly trained culinary team brings decades of experience to every dish. Using traditional techniques combined with modern innovation, we create dishes that delight the senses and satisfy the soul.</p>
-                    <p>Every dish is prepared with precision, passion, and pride. We believe that great food starts with great ingredients and great technique – and we deliver on both counts, every single time.</p>
-                </div>
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-number">5000+</div>
+                <div class="stat-label">Orders Delivered</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">30 Min</div>
+                <div class="stat-label">Fast Delivery</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">50+</div>
+                <div class="stat-label">Menu Items</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">4.9★</div>
+                <div class="stat-label">Customer Rating</div>
             </div>
         </div>
     </section>
 
     <!-- MENU SECTION -->
     <section class="menu" id="menu">
-        <div class="section-container">
-            <h2 class="section-title">🍔 Explore Our Menu</h2>
-            <div class="menu-tabs">
-                <button class="menu-tab active" onclick="filterMenu('all')">All Items</button>
-                <button class="menu-tab" onclick="filterMenu('burgers')">🍔 Burgers</button>
-                <button class="menu-tab" onclick="filterMenu('pizza')">🍕 Pizza</button>
-                <button class="menu-tab" onclick="filterMenu('chicken')">🍗 Chicken</button>
-                <button class="menu-tab" onclick="filterMenu('wraps')">🌯 Wraps</button>
-                <button class="menu-tab" onclick="filterMenu('sides')">🍟 Sides</button>
-                <button class="menu-tab" onclick="filterMenu('drinks')">🥤 Beverages</button>
+        <h2 class="section-title">Our Premium Menu</h2>
+        <div class="menu-categories">
+            <button class="category-btn active" onclick="filterMenu('all')">All</button>
+            <button class="category-btn" onclick="filterMenu('burgers')">Burgers</button>
+            <button class="category-btn" onclick="filterMenu('pizza')">Pizza</button>
+            <button class="category-btn" onclick="filterMenu('chicken')">Chicken</button>
+            <button class="category-btn" onclick="filterMenu('wraps')">Wraps</button>
+            <button class="category-btn" onclick="filterMenu('fries')">Sides</button>
+        </div>
+
+        <div class="food-grid" id="foodGrid">
+            <!-- Burgers -->
+            <div class="food-card" data-category="burgers">
+                <div class="food-image">
+                    <img src="24099.webp" alt="Premium Cheeseburger" loading="lazy">
+                    <div class="food-overlay"></div>
+                </div>
+                <div class="food-info">
+                    <div class="food-name">Premium Cheeseburger</div>
+                    <div class="food-desc">Double patty with aged cheddar and special sauce</div>
+                    <div class="food-footer">
+                        <div class="food-price">₹299</div>
+                        <div class="food-rating">⭐ 4.8</div>
+                        <button class="add-btn" onclick="addToOrder('Premium Cheeseburger', 299)">Add</button>
+                    </div>
+                </div>
             </div>
-            <div class="menu-grid" id="menuGrid"></div>
+
+            <!-- Pizza -->
+            <div class="food-card" data-category="pizza">
+                <div class="food-image">
+                    <img src="24100.webp" alt="Premium Pepperoni Pizza" loading="lazy">
+                    <div class="food-overlay"></div>
+                </div>
+                <div class="food-info">
+                    <div class="food-name">Premium Pepperoni Pizza</div>
+                    <div class="food-desc">Wood-fired with mozzarella and fresh basil</div>
+                    <div class="food-footer">
+                        <div class="food-price">₹349</div>
+                        <div class="food-rating">⭐ 4.9</div>
+                        <button class="add-btn" onclick="addToOrder('Premium Pepperoni Pizza', 349)">Add</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fried Chicken -->
+            <div class="food-card" data-category="chicken">
+                <div class="food-image">
+                    <img src="24102.webp" alt="Crispy Fried Chicken" loading="lazy">
+                    <div class="food-overlay"></div>
+                </div>
+                <div class="food-info">
+                    <div class="food-name">Crispy Fried Chicken</div>
+                    <div class="food-desc">Golden brown with 7 secret spices</div>
+                    <div class="food-footer">
+                        <div class="food-price">₹399</div>
+                        <div class="food-rating">⭐ 4.9</div>
+                        <button class="add-btn" onclick="addToOrder('Crispy Fried Chicken', 399)">Add</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Wraps -->
+            <div class="food-card" data-category="wraps">
+                <div class="food-image">
+                    <img src="24103.webp" alt="Chicken Shawarma Wrap" loading="lazy">
+                    <div class="food-overlay"></div>
+                </div>
+                <div class="food-info">
+                    <div class="food-name">Chicken Shawarma Wrap</div>
+                    <div class="food-desc">Marinated chicken with fresh vegetables</div>
+                    <div class="food-footer">
+                        <div class="food-price">₹249</div>
+                        <div class="food-rating">⭐ 4.7</div>
+                        <button class="add-btn" onclick="addToOrder('Chicken Shawarma Wrap', 249)">Add</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fries -->
+            <div class="food-card" data-category="fries">
+                <div class="food-image">
+                    <img src="24104.webp" alt="Loaded Fries" loading="lazy">
+                    <div class="food-overlay"></div>
+                </div>
+                <div class="food-info">
+                    <div class="food-name">Loaded Fries</div>
+                    <div class="food-desc">Crispy fries with cheese and special sauces</div>
+                    <div class="food-footer">
+                        <div class="food-price">₹149</div>
+                        <div class="food-rating">⭐ 4.6</div>
+                        <button class="add-btn" onclick="addToOrder('Loaded Fries', 149)">Add</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Beverages -->
+            <div class="food-card" data-category="beverages">
+                <div class="food-image">
+                    <img src="24105.webp" alt="Premium Milkshake" loading="lazy">
+                    <div class="food-overlay"></div>
+                </div>
+                <div class="food-info">
+                    <div class="food-name">Premium Milkshake</div>
+                    <div class="food-desc">Creamy shake with premium ice cream</div>
+                    <div class="food-footer">
+                        <div class="food-price">₹179</div>
+                        <div class="food-rating">⭐ 4.8</div>
+                        <button class="add-btn" onclick="addToOrder('Premium Milkshake', 179)">Add</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- More items -->
+            <div class="food-card" data-category="chicken">
+                <div class="food-image">
+                    <img src="24106.webp" alt="Spiced Wings" loading="lazy">
+                    <div class="food-overlay"></div>
+                </div>
+                <div class="food-info">
+                    <div class="food-name">Spiced Wings</div>
+                    <div class="food-desc">Perfectly seasoned with aioli sauce</div>
+                    <div class="food-footer">
+                        <div class="food-price">₹329</div>
+                        <div class="food-rating">⭐ 4.8</div>
+                        <button class="add-btn" onclick="addToOrder('Spiced Wings', 329)">Add</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="food-card" data-category="pizza">
+                <div class="food-image">
+                    <img src="24107.webp" alt="Vegetarian Delight Pizza" loading="lazy">
+                    <div class="food-overlay"></div>
+                </div>
+                <div class="food-info">
+                    <div class="food-name">Vegetarian Pizza</div>
+                    <div class="food-desc">Fresh veggies with oregano and olive oil</div>
+                    <div class="food-footer">
+                        <div class="food-price">₹299</div>
+                        <div class="food-rating">⭐ 4.7</div>
+                        <button class="add-btn" onclick="addToOrder('Vegetarian Pizza', 299)">Add</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="food-card" data-category="burgers">
+                <div class="food-image">
+                    <img src="24108.webp" alt="Spicy Burger" loading="lazy">
+                    <div class="food-overlay"></div>
+                </div>
+                <div class="food-info">
+                    <div class="food-name">Spicy Flame Burger</div>
+                    <div class="food-desc">Extra spicy with jalapeños and chipotle</div>
+                    <div class="food-footer">
+                        <div class="food-price">₹319</div>
+                        <div class="food-rating">⭐ 4.8</div>
+                        <button class="add-btn" onclick="addToOrder('Spicy Flame Burger', 319)">Add</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
     <!-- COMBOS SECTION -->
     <section class="combos" id="combos">
-        <div class="section-container">
-            <h2 class="section-title">🎉 Special Combo Offers</h2>
-            <div class="combo-grid" id="comboGrid"></div>
-        </div>
-    </section>
+        <h2 class="section-title">Special Combo Offers</h2>
+        <div class="combo-grid">
+            <div class="combo-card">
+                <img src="24109.webp" alt="Burger Combo" loading="lazy">
+                <div class="combo-overlay">
+                    <div class="combo-title">Burger Supreme Combo</div>
+                    <div class="combo-desc">2 Burgers + Fries + Drink</div>
+                    <div class="food-price" style="font-size: 1.8rem;">₹599</div>
+                </div>
+                <div class="combo-badge">20% OFF</div>
+            </div>
 
-    <!-- KITCHEN SHOWCASE 2 -->
-    <section class="kitchen-showcase">
-        <div class="section-container">
-            <h2 class="section-title">🌙 Premium Night Service</h2>
-            <div class="showcase-grid">
-                <div class="showcase-content">
-                    <h3>24/7 Premium Delivery</h3>
-                    <p>Open late for night owls and early risers! Our premium kitchen operates round the clock to serve you fresh, delicious food anytime you crave it.</p>
-                    <p>Whether it's a midnight snack, late-night party food, or an early breakfast, we're here to deliver excellence straight to your door.</p>
+            <div class="combo-card">
+                <img src="24100.webp" alt="Pizza Combo" loading="lazy">
+                <div class="combo-overlay">
+                    <div class="combo-title">Family Pizza Feast</div>
+                    <div class="combo-desc">Large Pizza + Sides + Drinks</div>
+                    <div class="food-price" style="font-size: 1.8rem;">₹799</div>
                 </div>
-                <div class="showcase-image">
-                    <img src="24101.webp" alt="Burger" loading="lazy">
+                <div class="combo-badge">25% OFF</div>
+            </div>
+
+            <div class="combo-card">
+                <img src="24102.webp" alt="Chicken Combo" loading="lazy">
+                <div class="combo-overlay">
+                    <div class="combo-title">Chicken Bucket Combo</div>
+                    <div class="combo-desc">12 Pieces + Fries + Sauces</div>
+                    <div class="food-price" style="font-size: 1.8rem;">₹899</div>
                 </div>
+                <div class="combo-badge">30% OFF</div>
             </div>
         </div>
     </section>
 
     <!-- ORDER SECTION -->
     <section class="order-section" id="order">
-        <div class="section-container">
-            <h2 class="section-title">🛒 Place Your Order</h2>
-            <div class="order-container">
-                <form class="order-form" id="orderForm">
+        <h2 class="section-title">Place Your Order</h2>
+        <div class="order-container">
+            <div class="order-form">
+                <h3 style="margin-bottom: 1.5rem; color: var(--primary-color);">Customer Details</h3>
+                <form id="orderForm">
                     <div class="form-group">
-                        <label>📝 Customer Name *</label>
-                        <input type="text" id="customerName" placeholder="Enter your name" required>
+                        <label>Full Name *</label>
+                        <input type="text" id="customerName" required placeholder="Enter your name">
                     </div>
                     <div class="form-group">
-                        <label>📞 Phone Number *</label>
-                        <input type="tel" id="customerPhone" placeholder="Enter your phone" required>
+                        <label>Phone Number *</label>
+                        <input type="tel" id="customerPhone" required placeholder="Enter your phone">
                     </div>
                     <div class="form-group">
-                        <label>📍 Full Address *</label>
-                        <textarea id="customerAddress" placeholder="Enter your delivery address" required></textarea>
+                        <label>Full Address *</label>
+                        <input type="text" id="customerAddress" required placeholder="Enter your address">
                     </div>
                     <div class="form-group">
-                        <label>🏘️ Area</label>
-                        <input type="text" id="customerArea" placeholder="Enter area name">
+                        <label>Area / Locality *</label>
+                        <input type="text" id="customerArea" required placeholder="Enter your area">
                     </div>
                     <div class="form-group">
-                        <label>📮 Pincode</label>
-                        <input type="text" id="customerPincode" placeholder="Enter pincode">
+                        <label>Pincode *</label>
+                        <input type="text" id="customerPincode" required placeholder="Enter pincode">
+                    </div>
+
+                    <h3 style="margin-top: 2rem; margin-bottom: 1rem; color: var(--primary-color);">Customization Options</h3>
+                    
+                    <div class="form-group">
+                        <label>Extra Cheese</label>
+                        <select id="extraCheese">
+                            <option value="">No</option>
+                            <option value="Yes (+₹50)">Yes (+₹50)</option>
+                        </select>
                     </div>
                     <div class="form-group">
-                        <label>✏️ Special Requests</label>
-                        <textarea id="customizationNotes" placeholder="Add any special requests..."></textarea>
+                        <label>Spice Level</label>
+                        <select id="spiceLevel">
+                            <option value="">Normal</option>
+                            <option value="Mild (-₹20)">Mild (-₹20)</option>
+                            <option value="Extra Spicy (+₹30)">Extra Spicy (+₹30)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Special Instructions</label>
+                        <textarea id="specialInstructions" placeholder="Add any special notes..." rows="3"></textarea>
+                    </div>
+
+                    <div class="order-buttons">
+                        <button type="button" class="btn btn-whatsapp" onclick="orderViaWhatsApp()">📱 WhatsApp Order</button>
+                        <a href="tel:+919999999999" class="btn btn-call" style="display: flex; align-items: center; justify-content: center;">☎️ Call Now</a>
                     </div>
                 </form>
+            </div>
 
-                <div class="order-summary">
-                    <h3 class="summary-title">📋 Order Summary</h3>
-                    <div id="orderItems"></div>
-                    <div class="summary-total">
-                        <span>Total Amount:</span>
-                        <span class="summary-total-price">₹0</span>
-                    </div>
-                    <div class="order-buttons">
-                        <button class="btn btn-whatsapp" onclick="sendWhatsAppOrder()">📲 WhatsApp</button>
-                        <button class="btn btn-call" onclick="callOrder()">☎️ Call</button>
+            <div class="order-summary">
+                <h3 style="margin-bottom: 1.5rem; color: var(--primary-color);">Order Summary</h3>
+                <div id="summaryItems">
+                    <div class="summary-item" style="text-align: center; padding: 2rem 0; color: var(--text-secondary);">
+                        Add items from menu to see them here
                     </div>
                 </div>
+                <div class="summary-total">
+                    <span>Total Amount:</span>
+                    <span id="totalAmount">₹0</span>
+                </div>
+                <p style="color: var(--text-secondary); font-size: 0.85rem; margin-top: 1rem;">
+                    💚 Secure ordering with WhatsApp or Direct Call
+                </p>
             </div>
         </div>
     </section>
 
     <!-- REVIEWS SECTION -->
-    <section class="reviews" id="reviews">
-        <div class="section-container">
-            <h2 class="section-title">⭐ Customer Reviews</h2>
-            <div class="reviews-grid" id="reviewsGrid"></div>
-        </div>
-    </section>
+    <section class="reviews">
+        <h2 class="section-title">Customer Reviews</h2>
+        <div class="review-grid">
+            <div class="review-card">
+                <div class="review-header">
+                    <div class="review-avatar">RJ</div>
+                    <div>
+                        <div class="review-name">Rajesh Kumar</div>
+                        <div class="review-rating">⭐⭐⭐⭐⭐ 5.0</div>
+                    </div>
+                </div>
+                <div class="review-text">"Best cloud kitchen in the city! Food quality is amazing and delivery is super fast. Highly recommended!"</div>
+            </div>
 
-    <!-- GALLERY SECTION -->
-    <section class="gallery" id="gallery">
-        <div class="section-container">
-            <h2 class="section-title">📸 Food Gallery</h2>
-            <div class="gallery-grid" id="galleryGrid"></div>
-        </div>
-    </section>
+            <div class="review-card">
+                <div class="review-header">
+                    <div class="review-avatar">PS</div>
+                    <div>
+                        <div class="review-name">Priya Singh</div>
+                        <div class="review-rating">⭐⭐⭐⭐⭐ 5.0</div>
+                    </div>
+                </div>
+                <div class="review-text">"The burgers are incredible! Fresh ingredients and the flavors are just perfect. Will order again!"</div>
+            </div>
 
-    <!-- CONTACT SECTION -->
-    <section class="contact" id="contact">
-        <div class="section-container">
-            <h2 class="section-title">📞 Get In Touch</h2>
-            <div class="contact-grid">
-                <div class="contact-card scroll-reveal">
-                    <div class="contact-icon">📞</div>
-                    <div class="contact-label">Call Us</div>
-                    <div class="contact-value">+91 99999 99999</div>
+            <div class="review-card">
+                <div class="review-header">
+                    <div class="review-avatar">AR</div>
+                    <div>
+                        <div class="review-name">Arjun Roy</div>
+                        <div class="review-rating">⭐⭐⭐⭐⭐ 4.9</div>
+                    </div>
                 </div>
-                <div class="contact-card scroll-reveal">
-                    <div class="contact-icon">💬</div>
-                    <div class="contact-label">WhatsApp</div>
-                    <div class="contact-value">+91 99999 99999</div>
+                <div class="review-text">"Premium quality with affordable prices. The customer service is excellent. This is my go-to place now!"</div>
+            </div>
+
+            <div class="review-card">
+                <div class="review-header">
+                    <div class="review-avatar">SN</div>
+                    <div>
+                        <div class="review-name">Sneha Nair</div>
+                        <div class="review-rating">⭐⭐⭐⭐ 4.8</div>
+                    </div>
                 </div>
-                <div class="contact-card scroll-reveal">
-                    <div class="contact-icon">⏱️</div>
-                    <div class="contact-label">Delivery Time</div>
-                    <div class="contact-value">30-45 Minutes</div>
+                <div class="review-text">"Food was hot and fresh when delivered. The pizza was absolutely delicious. Perfect experience!"</div>
+            </div>
+
+            <div class="review-card">
+                <div class="review-header">
+                    <div class="review-avatar">MK</div>
+                    <div>
+                        <div class="review-name">Manish Kumar</div>
+                        <div class="review-rating">⭐⭐⭐⭐ 4.9</div>
+                    </div>
                 </div>
-                <div class="contact-card scroll-reveal">
-                    <div class="contact-icon">🌍</div>
-                    <div class="contact-label">Service Area</div>
-                    <div class="contact-value">City Wide</div>
+                <div class="review-text">"Consistently great food and service. The chicken combo is amazing value for money. Keep it up!"</div>
+            </div>
+
+            <div class="review-card">
+                <div class="review-header">
+                    <div class="review-avatar">VP</div>
+                    <div>
+                        <div class="review-name">Vedavati Patel</div>
+                        <div class="review-rating">⭐⭐⭐⭐⭐ 5.0</div>
+                    </div>
                 </div>
+                <div class="review-text">"Amazing experience from ordering to delivery. Food quality is premium and packaging is eco-friendly. Top notch!"</div>
             </div>
         </div>
     </section>
 
     <!-- FOOTER -->
-    <footer>
+    <footer class="footer" id="contact">
         <div class="footer-content">
             <div class="footer-section">
-                <h3>🔥 FlameBox Kitchen</h3>
-                <p style="color: var(--gray-light); margin-bottom: 1rem;">Hot • Fresh • Delivered Fast</p>
+                <h4>🔥 FlameBox Kitchen</h4>
+                <p><strong>Hot • Fresh • Delivered Fast</strong></p>
+                <p style="margin-top: 1rem;">Premium cloud kitchen delivering fresh meals with exceptional taste in 30 minutes or less.</p>
             </div>
+
             <div class="footer-section">
-                <h3>Quick Links</h3>
-                <ul>
-                    <li><a href="#menu">Menu</a></li>
-                    <li><a href="#about">About</a></li>
-                    <li><a href="#order">Order</a></li>
-                    <li><a href="#contact">Contact</a></li>
+                <h4>Quick Links</h4>
+                <ul class="footer-links">
+                    <li><a href="#menu">Our Menu</a></li>
+                    <li><a href="#combos">Special Offers</a></li>
+                    <li><a href="#order">Order Online</a></li>
+                    <li><a href="#about">About Us</a></li>
                 </ul>
             </div>
+
             <div class="footer-section">
-                <h3>Follow Us</h3>
-                <ul>
-                    <li><a href="#">Instagram</a></li>
-                    <li><a href="#">Facebook</a></li>
-                    <li><a href="#">Twitter</a></li>
-                    <li><a href="#">LinkedIn</a></li>
-                </ul>
+                <h4>Contact Info</h4>
+                <p>📱 WhatsApp: <a href="https://wa.me/919999999999" style="color: var(--primary-color);">+91 99999 99999</a></p>
+                <p>☎️ Call: <a href="tel:+919999999999" style="color: var(--primary-color);">+91 99999 99999</a></p>
+                <p>⏰ Delivery: 30 Minutes<br>
+                   📍 City-wide Delivery Available</p>
             </div>
+
             <div class="footer-section">
-                <h3>Support</h3>
-                <ul>
-                    <li><a href="#">Privacy Policy</a></li>
-                    <li><a href="#">Terms & Conditions</a></li>
-                    <li><a href="#">FAQ</a></li>
-                    <li><a href="#">Feedback</a></li>
-                </ul>
+                <h4>Follow Us</h4>
+                <div class="social-icons">
+                    <a href="#" class="social-icon" title="Instagram">📷</a>
+                    <a href="#" class="social-icon" title="Facebook">👍</a>
+                    <a href="#" class="social-icon" title="Twitter">🐦</a>
+                    <a href="https://wa.me/919999999999" class="social-icon" title="WhatsApp">💬</a>
+                </div>
             </div>
         </div>
+
         <div class="footer-bottom">
-            <p>&copy; 2024 FlameBox Kitchen. All rights reserved. | Made with ❤️ for food lovers | Hot • Fresh • Delivered Fast</p>
+            <p>&copy; 2024 FlameBox Kitchen. All rights reserved. | Crafted with ❤️ for food lovers</p>
         </div>
     </footer>
 
     <!-- FLOATING BUTTONS -->
     <div class="floating-buttons">
-        <button class="floating-btn floating-whatsapp" title="Order on WhatsApp" onclick="contactViaWhatsApp()">💬</button>
-        <button class="floating-btn floating-call" title="Call Now" onclick="callNow()">☎️</button>
+        <a href="https://wa.me/919999999999" class="float-btn float-whatsapp" title="WhatsApp Order">💬</a>
+        <a href="tel:+919999999999" class="float-btn float-call" title="Call Order">☎️</a>
     </div>
 
     <script>
-        // Image mappings
-        const images = {
-            burger: "24101.webp",
-            pizza: "24100.webp",
-            chicken: "24102.webp",
-            wraps: "24103.webp",
-            fries: "24104.webp",
-            drinks: "24105.webp"
-        };
+        // NAVBAR ANIMATION
+        const navbar = document.querySelector('.navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
 
-        const menuItems = [
-            { id: 1, name: 'Classic Burger', category: 'burgers', price: 299, description: 'Premium beef patty with melted cheese', rating: 4.8, img: images.burger },
-            { id: 2, name: 'Pepperoni Pizza', category: 'pizza', price: 399, description: 'Classic Italian pizza with pepperoni', rating: 4.9, img: images.pizza },
-            { id: 3, name: 'Crispy Fried Chicken', category: 'chicken', price: 349, description: 'Golden fried chicken pieces', rating: 4.7, img: images.chicken },
-            { id: 4, name: 'Chicken Wrap', category: 'wraps', price: 249, description: 'Grilled chicken with fresh vegetables', rating: 4.6, img: images.wraps },
-            { id: 5, name: 'Spicy Fries', category: 'sides', price: 149, description: 'Crispy potato fries with spices', rating: 4.5, img: images.fries },
-            { id: 6, name: 'Signature Milkshake', category: 'drinks', price: 199, description: 'Creamy chocolate milkshake', rating: 4.8, img: images.drinks },
-            { id: 7, name: 'Margherita Pizza', category: 'pizza', price: 349, description: 'Fresh mozzarella and basil', rating: 4.9, img: images.pizza },
-            { id: 8, name: 'Spicy Burger', category: 'burgers', price: 329, description: 'Hot and spicy burger', rating: 4.7, img: images.burger },
-            { id: 9, name: 'Grilled Chicken', category: 'chicken', price: 369, description: 'Marinated grilled chicken', rating: 4.8, img: images.chicken },
-            { id: 10, name: 'Veggie Wrap', category: 'wraps', price: 229, description: 'Fresh vegetable wrap', rating: 4.4, img: images.wraps },
-            { id: 11, name: 'Loaded Fries', category: 'sides', price: 199, description: 'Fries with cheese and toppings', rating: 4.6, img: images.fries },
-            { id: 12, name: 'Fresh Juice', category: 'drinks', price: 149, description: 'Freshly made fruit juice', rating: 4.5, img: images.drinks }
-        ];
-
-        const combos = [
-            { name: 'Burger Combo', price: '₹549', discount: '20% OFF', img: images.burger },
-            { name: 'Pizza Combo', price: '₹699', discount: '25% OFF', img: images.pizza },
-            { name: 'Family Pack', price: '₹999', discount: '30% OFF', img: images.chicken }
-        ];
-
-        const reviews = [
-            { name: 'Raj Kumar', rating: '⭐⭐⭐⭐⭐', text: 'Amazing food quality and super fast delivery! Highly recommended.' },
-            { name: 'Priya Singh', rating: '⭐⭐⭐⭐⭐', text: 'Best cloud kitchen in town. The taste is incredible!' },
-            { name: 'Amit Patel', rating: '⭐⭐⭐⭐', text: 'Great food and customer service. Will order again!' },
-            { name: 'Neha Gupta', rating: '⭐⭐⭐⭐⭐', text: 'Absolutely love the burgers. Fresh and delicious!' },
-            { name: 'Vikram Sharma', rating: '⭐⭐⭐⭐⭐', text: 'Perfect for late-night cravings. Super fast!' },
-            { name: 'Ananya Mishra', rating: '⭐⭐⭐⭐', text: 'Good quality and reasonable prices!' }
-        ];
-
-        const galleryImages = [
-            images.burger, images.pizza, images.chicken, images.wraps, images.fries, images.drinks,
-            images.burger, images.pizza, images.chicken, images.wraps, images.fries, images.drinks
-        ];
-
-        let selectedItems = [];
-
-        function renderMenu(category = 'all') {
-            const menuGrid = document.getElementById('menuGrid');
-            menuGrid.innerHTML = '';
-            const filtered = category === 'all' ? menuItems : menuItems.filter(item => item.category === category);
+        // PARTICLES
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 30;
             
-            filtered.forEach(item => {
-                const card = document.createElement('div');
-                card.className = 'food-card scroll-reveal';
-                card.innerHTML = `
-                    <div class="food-image">
-                        <img src="${item.img}" alt="${item.name}">
-                    </div>
-                    <div class="food-info">
-                        <div class="food-name">${item.name}</div>
-                        <div class="food-description">${item.description}</div>
-                        <div class="food-footer">
-                            <div>
-                                <div class="food-price">₹${item.price}</div>
-                                <div class="food-rating">${'⭐'.repeat(Math.floor(item.rating))}</div>
-                            </div>
-                            <button class="add-to-order-btn" onclick="addToOrder(${item.id}, '${item.name}', ${item.price})">Add</button>
-                        </div>
-                    </div>
-                `;
-                menuGrid.appendChild(card);
-            });
-            revealElements();
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 20 + 's';
+                particlesContainer.appendChild(particle);
+            }
         }
+        createParticles();
 
-        function renderCombos() {
-            const comboGrid = document.getElementById('comboGrid');
-            comboGrid.innerHTML = '';
-            combos.forEach(combo => {
-                const card = document.createElement('div');
-                card.className = 'combo-card scroll-reveal';
-                card.style.backgroundImage = `url('${combo.img}')`;
-                card.innerHTML = `
-                    <div class="combo-overlay">
-                        <div class="combo-discount">${combo.discount}</div>
-                        <div class="combo-title">${combo.name}</div>
-                        <div class="combo-price">${combo.price}</div>
-                    </div>
-                `;
-                comboGrid.appendChild(card);
-            });
-        }
-
-        function renderReviews() {
-            const reviewsGrid = document.getElementById('reviewsGrid');
-            reviewsGrid.innerHTML = '';
-            reviews.forEach(review => {
-                const card = document.createElement('div');
-                card.className = 'review-card scroll-reveal';
-                card.innerHTML = `
-                    <div class="review-header">
-                        <div class="review-avatar">${review.name.charAt(0)}</div>
-                        <div>
-                            <div class="review-name">${review.name}</div>
-                            <div class="review-rating">${review.rating}</div>
-                        </div>
-                    </div>
-                    <p class="review-text">"${review.text}"</p>
-                `;
-                reviewsGrid.appendChild(card);
-            });
-            revealElements();
-        }
-
-        function renderGallery() {
-            const galleryGrid = document.getElementById('galleryGrid');
-            galleryGrid.innerHTML = '';
-            const labels = ['Burgers', 'Pizza', 'Fried Chicken', 'Wraps', 'Fries', 'Beverages', 'Pasta', 'Desserts', 'Combo Meals', 'Appetizers', 'Sides', 'Special'];
+        // MENU FILTERING
+        function filterMenu(category) {
+            const cards = document.querySelectorAll('.food-card');
+            const buttons = document.querySelectorAll('.category-btn');
             
-            galleryImages.forEach((img, idx) => {
-                const item = document.createElement('div');
-                item.className = 'gallery-item scroll-reveal';
-                item.innerHTML = `
-                    <img src="${img}" class="gallery-img" alt="${labels[idx % labels.length]}">
-                    <div class="gallery-overlay"><div class="gallery-text">${labels[idx % labels.length]}</div></div>
-                `;
-                galleryGrid.appendChild(item);
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            cards.forEach(card => {
+                if (category === 'all' || card.dataset.category === category) {
+                    card.style.display = '';
+                    setTimeout(() => card.style.opacity = '1', 10);
+                } else {
+                    card.style.display = 'none';
+                }
             });
-            revealElements();
         }
 
-        function addToOrder(id, name, price) {
-            const existing = selectedItems.find(item => item.id === id);
-            if (existing) existing.quantity++;
-            else selectedItems.push({ id, name, price, quantity: 1 });
+        // ORDER MANAGEMENT
+        let orderItems = [];
+        let orderTotal = 0;
+
+        function addToOrder(itemName, price) {
+            const existingItem = orderItems.find(item => item.name === itemName);
+            
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                orderItems.push({ name: itemName, price: price, quantity: 1 });
+            }
+            
             updateOrderSummary();
         }
 
         function updateOrderSummary() {
-            const orderItems = document.getElementById('orderItems');
-            orderItems.innerHTML = '';
-            let total = 0;
-            selectedItems.forEach(item => {
-                const itemTotal = item.price * item.quantity;
-                total += itemTotal;
-                const elem = document.createElement('div');
-                elem.className = 'summary-item';
-                elem.innerHTML = `
-                    <span class="summary-item-name">${item.name}</span>
-                    <span>x${item.quantity}</span>
-                    <span class="summary-item-price">₹${itemTotal}</span>
-                    <button onclick="removeFromOrder(${item.id})" style="background: none; border: none; color: #ff6b35; cursor: pointer;">✕</button>
-                `;
-                orderItems.appendChild(elem);
-            });
-            document.querySelector('.summary-total-price').textContent = `₹${total}`;
+            const summaryDiv = document.getElementById('summaryItems');
+            summaryDiv.innerHTML = '';
+            orderTotal = 0;
+            
+            if (orderItems.length === 0) {
+                summaryDiv.innerHTML = '<div class="summary-item" style="text-align: center; padding: 2rem 0; color: var(--text-secondary);">Add items from menu to see them here</div>';
+            } else {
+                orderItems.forEach(item => {
+                    const itemTotal = item.price * item.quantity;
+                    orderTotal += itemTotal;
+                    
+                    const summaryItem = document.createElement('div');
+                    summaryItem.className = 'summary-item';
+                    summaryItem.innerHTML = `
+                        <span>${item.name} x${item.quantity}</span>
+                        <span>₹${itemTotal}</span>
+                    `;
+                    summaryDiv.appendChild(summaryItem);
+                });
+            }
+            
+            document.getElementById('totalAmount').textContent = '₹' + orderTotal;
         }
 
-        function removeFromOrder(id) {
-            selectedItems = selectedItems.filter(item => item.id !== id);
-            updateOrderSummary();
-        }
-
-        function filterMenu(category) {
-            document.querySelectorAll('.menu-tab').forEach(tab => tab.classList.remove('active'));
-            event.target.classList.add('active');
-            renderMenu(category);
-        }
-
-        function sendWhatsAppOrder() {
+        // WHATSAPP ORDER
+        function orderViaWhatsApp() {
             const name = document.getElementById('customerName').value;
             const phone = document.getElementById('customerPhone').value;
             const address = document.getElementById('customerAddress').value;
             const area = document.getElementById('customerArea').value;
             const pincode = document.getElementById('customerPincode').value;
-            const notes = document.getElementById('customizationNotes').value;
-            
-            if (!name || !phone || !address) {
-                alert('Please fill in all required fields!');
+            const extraCheese = document.getElementById('extraCheese').value;
+            const spiceLevel = document.getElementById('spiceLevel').value;
+            const instructions = document.getElementById('specialInstructions').value;
+
+            if (!name || !phone || !address || !area || !pincode) {
+                alert('Please fill in all required customer details');
                 return;
             }
+
+            if (orderItems.length === 0) {
+                alert('Please add items to your order');
+                return;
+            }
+
+            let message = `*FlameBox Kitchen Order* 🔥\n\n`;
+            message += `*Customer Details:*\n`;
+            message += `Name: ${name}\n`;
+            message += `Phone: ${phone}\n`;
+            message += `Address: ${address}, ${area}\n`;
+            message += `Pincode: ${pincode}\n\n`;
+            message += `*Order Items:*\n`;
             
-            let itemsList = '';
-            let total = 0;
-            selectedItems.forEach(item => {
-                const itemTotal = item.price * item.quantity;
-                total += itemTotal;
-                itemsList += `${item.name} x${item.quantity} - ₹${itemTotal}
-`;
+            orderItems.forEach(item => {
+                message += `${item.name} x${item.quantity} - ₹${item.price * item.quantity}\n`;
             });
             
-            if (selectedItems.length === 0) {
-                alert('Please select at least one item!');
-                return;
-            }
+            if (extraCheese) message += `Extra Cheese: ${extraCheese}\n`;
+            if (spiceLevel) message += `Spice Level: ${spiceLevel}\n`;
+            if (instructions) message += `Special Instructions: ${instructions}\n`;
             
-            const message = `*FlameBox Kitchen Order*
+            message += `\n*Total Amount: ₹${orderTotal}*\n`;
+            message += `\nThank you for ordering from FlameBox Kitchen! 🔥`;
 
-*Customer Details:*
-Name: ${name}
-Phone: ${phone}
-Address: ${address}
-Area: ${area}
-Pincode: ${pincode}
-
-*Order Items:*
-${itemsList}
-*Total Amount: ₹${total}*
-
-*Special Requests:*
-${notes || 'None'}
-
-Please confirm my order!`;
-            
-            const whatsappNumber = '919677690323';
             const encodedMessage = encodeURIComponent(message);
-            window.open(`https://wa.me/${whatsappNumber}?text=${encodedMessage}`, '_blank');
+            const whatsappURL = `https://wa.me/919999999999?text=${encodedMessage}`;
+            window.open(whatsappURL, '_blank');
         }
 
-        function contactViaWhatsApp() {
-            const message = 'Hi FlameBox Kitchen! I want to order from you.';
-            const whatsappNumber = '919677690323';
-            const encodedMessage = encodeURIComponent(message);
-            window.open(`https://wa.me/${whatsappNumber}?text=${encodedMessage}`, '_blank');
+        // SCROLL TO SECTION
+        function scrollToSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            section.scrollIntoView({ behavior: 'smooth' });
         }
 
-        function callNow() {
-            window.location.href = 'tel:+919677690323';
-        }
+        // SMOOTH SCROLL FOR NAV LINKS
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href').substring(1);
+                const targetSection = document.getElementById(targetId);
+                targetSection.scrollIntoView({ behavior: 'smooth' });
+            });
+        });
 
-        function callOrder() {
-            callNow();
-        }
+        // SCROLL REVEAL ANIMATIONS
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
 
-        function revealElements() {
-            const reveals = document.querySelectorAll('.scroll-reveal');
-            reveals.forEach(elem => {
-                if (!elem.classList.contains('revealed')) {
-                    const top = elem.getBoundingClientRect().top;
-                    if (top < window.innerHeight - 100) {
-                        elem.classList.add('revealed');
-                    }
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
                 }
             });
-        }
+        }, observerOptions);
 
-        window.addEventListener('scroll', () => {
-            const navbar = document.getElementById('navbar');
-            if (window.scrollY > 50) navbar.classList.add('scrolled');
-            else navbar.classList.remove('scrolled');
-            revealElements();
-        });
-
-        document.getElementById('hamburger').addEventListener('click', () => {
-            document.getElementById('navMenu').classList.toggle('active');
-        });
-
-        document.querySelectorAll('.nav-menu a').forEach(link => {
-            link.addEventListener('click', () => {
-                document.getElementById('navMenu').classList.remove('active');
-            });
-        });
-
-        window.addEventListener('load', () => {
-            renderMenu();
-            renderCombos();
-            renderReviews();
-            renderGallery();
-            revealElements();
+        document.querySelectorAll('.food-card, .stat-card, .review-card').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'all 0.6s ease';
+            observer.observe(el);
         });
     </script>
 </body>
